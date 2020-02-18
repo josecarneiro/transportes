@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+tmp
+.env
+package-lock.json
+yarn.lock
+
+*.spec.js

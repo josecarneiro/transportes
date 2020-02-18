@@ -1,0 +1,37 @@
+[
+  {
+    "id": "azul",
+    "stations": [
+      "RB",
+      "AS",
+      "AF",
+      "PO",
+      "CA",
+      "CM",
+      "AH",
+      "LA",
+      "JZ",
+      "PE",
+      "SS",
+      "PA",
+      "MP",
+      "AV",
+      "RE",
+      "BC",
+      "TP",
+      "SP"
+    ]
+  },
+  {
+    "id": "amarela",
+    "stations": ["OD", "SR", "AX", "LU", "QC", "CG", "CU", "EC", "CP", "SA", "PI", "MP", "RA"]
+  },
+  {
+    "id": "vermelha",
+    "stations": ["AP", "EN", "MO", "OR", "CR", "OS", "CH", "BV", "OL", "AM", "SA", "SS"]
+  },
+  {
+    "id": "verde",
+    "stations": ["TE", "CG", "AL", "RM", "AE", "AM", "AR", "AN", "IN", "MM", "RO", "BC", "CS"]
+  }
+]

@@ -1,0 +1,402 @@
+[
+  {
+    "id": "AM",
+    "name": "Alameda",
+    "latitude": 38.7373,
+    "longitude": -9.13409,
+    "lines": ["verde", "vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "AF",
+    "name": "Alfornelos",
+    "latitude": 38.7606,
+    "longitude": -9.20471,
+    "lines": ["azul"],
+    "zone": "C"
+  },
+  {
+    "id": "AH",
+    "name": "Alto dos Moinhos",
+    "latitude": 38.7496,
+    "longitude": -9.17995,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "AL",
+    "name": "Alvalade",
+    "latitude": 38.7535,
+    "longitude": -9.14388,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "AS",
+    "name": "Amadora Este",
+    "latitude": 38.7584,
+    "longitude": -9.21917,
+    "lines": ["azul"],
+    "zone": "C"
+  },
+  {
+    "id": "AX",
+    "name": "Ameixoeira",
+    "latitude": 38.7799,
+    "longitude": -9.15999,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "AN",
+    "name": "Anjos",
+    "latitude": 38.7266,
+    "longitude": -9.13503,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "AE",
+    "name": "Areeiro",
+    "latitude": 38.7426,
+    "longitude": -9.13381,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "AR",
+    "name": "Arroios",
+    "latitude": 38.7335,
+    "longitude": -9.13445,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "AV",
+    "name": "Avenida",
+    "latitude": 38.7201,
+    "longitude": -9.14582,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "BC",
+    "name": "Baixa/Chiado",
+    "latitude": 38.7107,
+    "longitude": -9.13909,
+    "lines": ["azul", "verde"],
+    "zone": "L"
+  },
+  {
+    "id": "BV",
+    "name": "Bela Vista",
+    "latitude": 38.7477,
+    "longitude": -9.11855,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "CR",
+    "name": "Cabo Ruivo",
+    "latitude": 38.7632,
+    "longitude": -9.10409,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "CS",
+    "name": "Cais do Sodré",
+    "latitude": 38.7062,
+    "longitude": -9.14503,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "CG",
+    "name": "Campo Grande",
+    "latitude": 38.7599,
+    "longitude": -9.15794,
+    "lines": ["amarela", "verde"],
+    "zone": "L"
+  },
+  {
+    "id": "CP",
+    "name": "Campo Pequeno",
+    "latitude": 38.7414,
+    "longitude": -9.14703,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "CA",
+    "name": "Carnide",
+    "latitude": 38.7593,
+    "longitude": -9.19281,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "CH",
+    "name": "Chelas",
+    "latitude": 38.7553,
+    "longitude": -9.11414,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "CU",
+    "name": "Cidade Universitária",
+    "latitude": 38.7519,
+    "longitude": -9.15863,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "CM",
+    "name": "Colégio Militar/Luz",
+    "latitude": 38.7533,
+    "longitude": -9.18866,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "EC",
+    "name": "Entre Campos",
+    "latitude": 38.7479,
+    "longitude": -9.14856,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "IN",
+    "name": "Intendente",
+    "latitude": 38.7222,
+    "longitude": -9.13531,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "JZ",
+    "name": "Jardim Zoológico",
+    "latitude": 38.7422,
+    "longitude": -9.16872,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "LA",
+    "name": "Laranjeiras",
+    "latitude": 38.7485,
+    "longitude": -9.17243,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "LU",
+    "name": "Lumiar",
+    "latitude": 38.7728,
+    "longitude": -9.1597,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "MP",
+    "name": "Marquês de Pombal",
+    "latitude": 38.7249,
+    "longitude": -9.15081,
+    "lines": ["amarela", "azul"],
+    "zone": "L"
+  },
+  {
+    "id": "MM",
+    "name": "Martim Moniz",
+    "latitude": 38.7168,
+    "longitude": -9.13575,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "OD",
+    "name": "Odivelas",
+    "latitude": 38.7932,
+    "longitude": -9.17322,
+    "lines": ["amarela"],
+    "zone": "C"
+  },
+  {
+    "id": "OL",
+    "name": "Olaias",
+    "latitude": 38.7392,
+    "longitude": -9.12366,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "OS",
+    "name": "Olivais",
+    "latitude": 38.7613,
+    "longitude": -9.11204,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "OR",
+    "name": "Oriente",
+    "latitude": 38.7678,
+    "longitude": -9.09977,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "PA",
+    "name": "Parque",
+    "latitude": 38.7297,
+    "longitude": -9.15028,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "PI",
+    "name": "Picoas",
+    "latitude": 38.7306,
+    "longitude": -9.1465,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "PO",
+    "name": "Pontinha",
+    "latitude": 38.7624,
+    "longitude": -9.19693,
+    "lines": ["azul"],
+    "zone": "C"
+  },
+  {
+    "id": "PE",
+    "name": "Praça de Espanha",
+    "latitude": 38.7377,
+    "longitude": -9.15845,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "QC",
+    "name": "Quinta das Conchas",
+    "latitude": 38.7671,
+    "longitude": -9.15546,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "RA",
+    "name": "Rato",
+    "latitude": 38.7201,
+    "longitude": -9.15411,
+    "lines": ["amarela"],
+    "zone": "L"
+  },
+  {
+    "id": "RE",
+    "name": "Restauradores",
+    "latitude": 38.7151,
+    "longitude": -9.14162,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "RM",
+    "name": "Roma",
+    "latitude": 38.7485,
+    "longitude": -9.14135,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "RO",
+    "name": "Rossio",
+    "latitude": 38.7138,
+    "longitude": -9.13896,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "SA",
+    "name": "Saldanha",
+    "latitude": 38.7353,
+    "longitude": -9.14558,
+    "lines": ["amarela", "vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "SP",
+    "name": "Santa Apolónia",
+    "latitude": 38.7138,
+    "longitude": -9.12256,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "SS",
+    "name": "São Sebastião",
+    "latitude": 38.7348,
+    "longitude": -9.15423,
+    "lines": ["azul", "vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "SR",
+    "name": "Senhor Roubado",
+    "latitude": 38.7858,
+    "longitude": -9.17215,
+    "lines": ["amarela"],
+    "zone": "C"
+  },
+  {
+    "id": "TE",
+    "name": "Telheiras",
+    "latitude": 38.7604,
+    "longitude": -9.16606,
+    "lines": ["verde"],
+    "zone": "L"
+  },
+  {
+    "id": "TP",
+    "name": "Terreiro do Paço",
+    "latitude": 38.7072,
+    "longitude": -9.13335,
+    "lines": ["azul"],
+    "zone": "L"
+  },
+  {
+    "id": "MO",
+    "name": "Moscavide",
+    "latitude": 38.7748,
+    "longitude": -9.10266,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "EN",
+    "name": "Encarnação",
+    "latitude": 38.775,
+    "longitude": -9.11498,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "AP",
+    "name": "Aeroporto",
+    "latitude": 38.7686,
+    "longitude": -9.12833,
+    "lines": ["vermelha"],
+    "zone": "L"
+  },
+  {
+    "id": "RB",
+    "name": "Reboleira",
+    "latitude": 38.7522,
+    "longitude": -9.22414,
+    "lines": ["azul"],
+    "zone": "L"
+  }
+]
