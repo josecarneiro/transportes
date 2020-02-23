@@ -26,13 +26,8 @@ module.exports = class Metro extends GenericTransport {
   }
 
   async load(endpoint, { query } = {}) {
-    try {
-      const response = await this.client.get(endpoint, { ...(query && { query }) });
-      return response.data.resposta;
-    } catch (error) {
-      console.log('Error making Metro API request', error);
-      throw error;
-    }
+    const response = await this._load(endpoint, { query });
+    return response.data.resposta;
   }
 
   // API Status

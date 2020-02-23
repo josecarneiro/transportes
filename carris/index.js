@@ -13,8 +13,7 @@ module.exports = class Carris extends GenericTransport {
   }
 
   async load(endpoint, { query } = {}) {
-    this.debug(`Loading endpoint ${endpoint}`);
-    const response = await this.client.get(endpoint, { ...(query && { query }) });
+    const response = await this._load(endpoint, { query });
     return response.data;
   }
 
