@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test:dev": "nodemon test.spec.js",
-    "test": "mocha test/index.spec.js",
-    "test:trains": "nodemon metro/train-location.spec.js"
+    "test": "mocha test/index.spec.js --timeout 10000",
+    "test:carris": "nodemon carris/carris.spec.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2"
   }

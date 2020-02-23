@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const GenericTransport = require('./../generic');
+
 const CURRENT_API_VERSION = '1.0.1';
 
 const parseDate = string =>
@@ -12,8 +14,9 @@ const parseDate = string =>
     string.slice(12, 14)
   );
 
-module.exports = class Metro {
-  constructor({ version = CURRENT_API_VERSION, key } = {}) {
+module.exports = class Metro extends GenericTransport {
+  constructor({ version = CURRENT_API_VERSION, key, ...options } = {}) {
+    super(options);
     this.client = axios.create({
       baseURL: `https://api.metrolisboa.pt:8243/estadoServicoML/${version}`,
       headers: {
@@ -88,7 +91,7 @@ module.exports = class Metro {
 
   // Wait Times
 
-  _transformWaitTimes = ({
+  _transformEstimates = ({
     stop_id: station, //  'CA'
     cais: pier, //  'PT4CAO'
     hora: time, //  '20200215185211'
@@ -124,9 +127,9 @@ module.exports = class Metro {
     ]
   });
 
-  loadWaitTimes = async () =>
-    (await this.load('/tempoEspera/Estacao/todos')).map(this._transformWaitTimes);
+  loadEstimates = async () =>
+    (await this.load('/tempoEspera/Estacao/todos')).map(this._transformEstimates);
 
-  loadStationWaitTimes = async station =>
-    (await this.load(`/tempoEspera/Estacao/${station}`)).map(this._transformWaitTimes);
+  loadStationEstimates = async station =>
+    (await this.load(`/tempoEspera/Estacao/${station}`)).map(this._transformEstimates);
 };

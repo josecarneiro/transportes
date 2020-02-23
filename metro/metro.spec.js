@@ -35,15 +35,15 @@ describe('Metro', () => {
     });
   });
 
-  describe('wait times', () => {
-    it('should load all wait times', async () => {
-      const times = await client.loadWaitTimes();
+  describe('estimates', () => {
+    it('should load all estimates', async () => {
+      const times = await client.loadEstimates();
       // log(times);
       // write('wait-times.json', times);
     });
 
-    it('should load station wait times', async () => {
-      const times = await client.loadStationWaitTimes('CU');
+    it('should load station estimates', async () => {
+      const times = await client.loadStationEstimates('CU');
       // log(times);
       // write('wait-times.json', times);
     });
