@@ -1,12 +1,15 @@
 'use strict';
 
-const { log, write } = require('./utilities');
+const { log, write } = require('../utilities');
 
 const Metro = require('.');
 
 const KEY = process.env.API_METRO_KEY;
 
-const client = new Metro({ key: KEY });
+const client = new Metro({
+  key: KEY
+  // debug: true
+});
 
 describe('Metro', () => {
   describe('API status', () => {
