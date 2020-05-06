@@ -1,10 +1,12 @@
+'use strict';
+
 const axios = require('axios');
 
 const GenericTransport = require('./../generic');
 
 const carrisParsers = require('./parsers');
 
-const CURRENT_API_VERSION = '2.7';
+const CURRENT_API_VERSION = '2.8';
 
 class Carris extends GenericTransport {
   constructor({ version = CURRENT_API_VERSION, ...options } = {}) {
@@ -29,6 +31,10 @@ class Carris extends GenericTransport {
       return false;
     }
   };
+
+  // Alerts
+
+  listAlerts = async () => (await this.load('/alerts')).map(carrisParsers._transformAlert);
 
   // Bus Stops
 
@@ -70,16 +76,32 @@ class Carris extends GenericTransport {
     }
   };
 
+  // Geocoding
+
+  geocode = async query =>
+    (await this.load(`/Geocoding/${query}`)).map(carrisParsers._transformGeocodingResult);
+
+  geocodeSuggest = async query =>
+    (await this.load(`/Geocoding/suggest/${query}`)).map(
+      carrisParsers._transformGeocodingSuggestion
+    );
+
+  reverseGeocode = async ({ latitude, longitude }) =>
+    carrisParsers._transformGeocodingResult(
+      await this.load(`/Geocoding/reverse/lat/${latitude}/lng/${longitude}`)
+    );
+
+  loadGeocodingLocation = async id =>
+    carrisParsers._transformGeocodingResult(await this.load(`/Geocoding/fromId/${id}`));
+
   // Routes
 
   listRoutes = async ({ stop, after } = {}) => {
-    let endpoint;
+    let endpoint = '/Routes';
     if (stop) {
-      endpoint = `/Routes/busStop/${stop}`;
+      endpoint += `/busStop/${stop}`;
     } else if (after && after instanceof Date) {
-      endpoint = `/Routes/timestamp/${after.toISOString()}`;
-    } else {
-      endpoint = `/Routes`;
+      endpoint += `/timestamp/${after.toISOString()}`;
     }
     return (await this.load(endpoint)).map(carrisParsers._transformRoute);
   };
@@ -87,17 +109,44 @@ class Carris extends GenericTransport {
   listRoutesAtBusStop = async id =>
     (await this.load(`/Routes/busStop/${id}`)).map(carrisParsers._transformRoute);
 
+  // Planning
+
+  // 2020-05-06T20%3A00%3A00
+
+  plan = async ({
+    start: { latitude: startLatitude, longitude: startLongitude },
+    end: { latitude: endLatitude, longitude: endLongitude },
+    date,
+    language
+  }) =>
+    await this.load(
+      `/Planner/startlat/${startLatitude}/startlon/${startLongitude}/endLat/${endLatitude}/endLon/${endLongitude}/start/${date.toISOString()}/language/${language}`
+    );
+
+  // Timetables
+
+  loadTimetable = async ({ route, direction, stop, date }) =>
+    carrisParsers._transformTimetable(
+      await this.load(
+        `/StopTimes/routeNumber/${route}/direction/${direction}/stop/${stop}/date/${
+          date.toISOString().split('T')[0]
+        }`
+      )
+    );
+
   // Vehicles
 
-  loadVehicle = async id => {
-    return carrisParsers._transformVehicle({
+  loadVehicle = async id =>
+    carrisParsers._transformVehicle({
       id,
       ...(await this.load(`/SGO/busNumber/${id}`))
     });
-  };
 
-  listVehicles = async () =>
-    (await this.load('/vehicleStatuses')).map(carrisParsers._transformVehicle);
+  listVehicles = async ({ route } = {}) => {
+    let endpoint = '/vehicleStatuses';
+    if (route) endpoint += `/routeNumber/${route}`;
+    return (await this.load(endpoint)).map(carrisParsers._transformVehicle);
+  };
 }
 
 module.exports = Carris;

@@ -1,3 +1,5 @@
+'use strict';
+
 const axios = require('axios');
 
 const GenericTransport = require('./../generic');
@@ -42,18 +44,25 @@ module.exports = class Metro extends GenericTransport {
       ['vermelha', 'tipo_msg_vm'],
       ['verde', 'tipo_msg_vd'],
       ['azul', 'tipo_msg_az']
-    ].map(([id, message]) => ({
-      line: id,
-      status: result[id] === ' Ok',
+    ].map(([line, message]) => ({
+      line,
+      status: result[line] === ' Ok',
       message: result[message] !== '0' ? result[message] : null
     }));
   };
+
+  // Stations
 
   listStations = async () =>
     (await this.load('/infoEstacao/todos')).map(metroParsers._transformStation);
 
   loadStation = async id =>
-    (await this.load(`/infoEstacao/${id}`)).map(metroParsers._transformStation).find(() => true);
+    (await this.load(`/infoEstacao/${id}`)).map(metroParsers._transformStation);
+
+  // Destinations
+
+  listDestinations = async () =>
+    (await this.load('/infoDestinos/todos')).map(metroParsers._transformDestination);
 
   // Wait Times
 

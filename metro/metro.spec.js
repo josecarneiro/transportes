@@ -13,42 +13,61 @@ const client = new Metro({
 
 describe('Metro', () => {
   describe('API status', () => {
-    it('should check API status', async () => {
+    test('should check API status', async () => {
       const status = await client.checkAPIStatus();
       // log(status);
     });
   });
 
   describe('line status', () => {
-    it('should check line status', async () => {
+    test('should check line status', async () => {
       const status = await client.checkLineStatus();
       // log(status);
     });
   });
 
-  describe('stations', () => {
-    it('should list stations', async () => {
+  describe('Stations', () => {
+    test('should list stations', async () => {
       const stations = await client.listStations();
       // log(stations);
     });
 
-    it('should load station', async () => {
+    test('should load station', async () => {
       const station = await client.loadStation('CU');
       // log(station);
     });
   });
 
-  describe('estimates', () => {
-    it('should load all estimates', async () => {
-      const times = await client.loadEstimates();
-      // log(times);
-      // write('wait-times.json', times);
+  describe('Destinations', () => {
+    test('should list destinations', async () => {
+      const destinations = await client.listDestinations();
+      const stations = await client.listStations();
+
+      const completed = destinations.map(({ id, name }) => ({
+        destinationId: id,
+        name,
+        ...stations.find(station => station.name === name)
+      }));
+      // log(completed);
+      // log(destinations);
+      // log(stations);
     });
 
-    it('should load station estimates', async () => {
+    // test('should load station', async () => {
+    //   const station = await client.loadStation('CU');
+    //   // log(station);
+    // });
+  });
+
+  describe('Estimates', () => {
+    test('should load all estimates', async () => {
+      const times = await client.loadEstimates();
+      // log(times);
+    });
+
+    test('should load station estimates', async () => {
       const times = await client.loadStationEstimates('CU');
       // log(times);
-      // write('wait-times.json', times);
     });
   });
 });

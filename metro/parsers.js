@@ -10,13 +10,12 @@ const _transformStation = ({
   zone_id: zone // 'L'
 }) => ({
   id,
-  name,
+  // name,
+  // name: name.replace(/\//g, '-'), // The name for "Baixa-Chiado" comes misformated as "Baixa/Chiado"
+  name: name.replace(/\/Chiado/g, '-Chiado'), // The name for "Baixa-Chiado" comes misformated as "Baixa/Chiado"
   latitude: Number(latitude),
   longitude: Number(longitude),
-  lines: line
-    .toLowerCase()
-    .replace(/\[|\]/g, '')
-    .split(', '),
+  lines: line.toLowerCase().replace(/\[|\]/g, '').split(', '),
   zone
 });
 
@@ -56,6 +55,8 @@ const _transformEstimates = ({
   ]
 });
 
+const _transformDestination = ({ id_destino: id, nome_destino: name }) => ({ id, name });
+
 const parseDate = string =>
   new Date(
     string.slice(0, 4),
@@ -68,5 +69,6 @@ const parseDate = string =>
 
 module.exports = {
   _transformEstimates,
-  _transformStation
+  _transformStation,
+  _transformDestination
 };

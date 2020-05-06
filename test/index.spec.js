@@ -1,6 +1,8 @@
+'use strict';
+
 require('dotenv').config();
 
-describe('Transports', () => {
+describe('Transportes', () => {
   require('./../carris/carris.spec');
   require('./../metro/metro.spec');
   require('./../gira/gira.spec');

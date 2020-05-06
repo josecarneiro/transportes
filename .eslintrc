@@ -23,6 +23,7 @@
         "after": true
       }
     ],
+    "strict": ["error", "global"],
     "no-unused-vars": ["warn"],
     "no-undef": ["error"],
     "no-var": ["warn"],
@@ -45,9 +46,9 @@
   },
   "overrides": [
     {
-      "files": ["*.spec.js"],
+      "files": ["**/*.spec.js"],
       "env": {
-        "mocha": true
+        "jest": true
       }
     }
   ]

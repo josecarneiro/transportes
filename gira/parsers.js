@@ -1,3 +1,5 @@
+'use strict';
+
 const extractName = name => name.replace(/\d+ ?- ?/g, '');
 
 const _transformStationBasic = ({

@@ -1,10 +1,12 @@
+'use strict';
+
 const axios = require('axios');
 
 const GenericTransport = require('./../generic');
 
-const { _transformStationItem, _transformStationSingle } = require('./parsers');
+const giraParsers = require('./parsers');
 
-module.exports = class Gira extends GenericTransport {
+class Gira extends GenericTransport {
   constructor({ key, ...options } = {}) {
     super(options);
     this.client = axios.create({
@@ -33,13 +35,13 @@ module.exports = class Gira extends GenericTransport {
 
   // Line Status
 
-  listStations = async () => {
-    const result = await this.load('/gira/station/list');
-    return result.features.map(_transformStationItem).filter(({ ratio }) => ratio <= 1);
-  };
+  listStations = async () =>
+    (await this.load('/gira/station/list')).features
+      .map(giraParsers._transformStationItem)
+      .filter(({ ratio }) => ratio <= 1);
 
-  loadStation = async id => {
-    const result = await this.load(`/gira/station/${id}`);
-    return _transformStationSingle(result);
-  };
-};
+  loadStation = async id =>
+    giraParsers._transformStationSingle(await this.load(`/gira/station/${id}`));
+}
+
+module.exports = Gira;

@@ -92,11 +92,77 @@ const _transformVehicle = ({
   })
 });
 
+const _transformAlert = ({
+  id,
+  alertType: type,
+  alertDescription: description,
+  publishDate: published,
+  expirationDate: expires,
+  routeNumber: route,
+  busStopNumber: stop
+}) => ({
+  id,
+  type: { Informative: 'informative', Ocurrence: 'ocurrence' }[type],
+  description,
+  published: published && new Date(published),
+  expires: expires && new Date(expires),
+  route,
+  stop
+});
+
+const _transformGeocodingResult = ({
+  lat: latitude,
+  lng: longitude,
+  address,
+  header,
+  isLocalMatch: localMatch
+}) => ({
+  position: {
+    latitude,
+    longitude
+  },
+  address,
+  // header, // Rename title?
+  title: header,
+  localMatch
+});
+
+const _transformGeocodingSuggestion = ({ locationId: id, address, header }) => ({
+  id,
+  address,
+  // header // Rename title?
+  title: header
+});
+
+const _transformTimetableEntry = ({ stopId: stop, routeNumber: route, direction, time }) => ({
+  stop,
+  route,
+  direction,
+  time
+  // time: '09:45:00'
+});
+
+const _transformTimetable = ({ dayId, seasonId, dayName, seasonName, stopTimes }) => ({
+  day: {
+    id: dayId,
+    name: dayName
+  },
+  season: {
+    id: seasonId,
+    name: seasonName
+  },
+  stopTimes: stopTimes.map(_transformTimetableEntry)
+});
+
 module.exports = {
   _transformStop,
   _transformStopWithEstimation,
   _transformVehicleBase,
   _transformEstimation,
   _transformRoute,
-  _transformVehicle
+  _transformVehicle,
+  _transformAlert,
+  _transformGeocodingResult,
+  _transformGeocodingSuggestion,
+  _transformTimetable
 };
