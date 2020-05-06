@@ -17,6 +17,9 @@ jobs:
           node-version: 12
       - run: yarn install --frozen-lockfile
       - run: yarn test
+        env:
+          API_EMEL_KEY: ${{secrets.API_EMEL_KEY}}
+          API_METRO_KEY: ${{secrets.API_METRO_KEY}}
 
   publish-npm:
     needs: build
