@@ -23,3 +23,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile
       - run: yarn test
+        env:
+          API_EMEL_KEY: ${{secrets.API_EMEL_KEY}}
+          API_METRO_KEY: ${{secrets.API_METRO_KEY}}
