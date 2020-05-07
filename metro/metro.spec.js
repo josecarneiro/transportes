@@ -51,7 +51,7 @@ describe('Metro', () => {
       // log(completed);
       // log(destinations);
       // log(stations);
-    });
+    }, 10000);
 
     // test('should load station', async () => {
     //   const station = await client.loadStation('CU');

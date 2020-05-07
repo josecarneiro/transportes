@@ -1,5 +1,7 @@
 # transportes
 
+![Node.js CI](https://github.com/josecarneiro/transportes/workflows/Node.js%20CI/badge.svg)
+
 `transportes` is an node package that allows you to load information from multiple transportation APIs from Portugal.
 
 At the moment, it supports 3 APIs:

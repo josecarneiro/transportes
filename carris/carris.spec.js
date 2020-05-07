@@ -53,7 +53,7 @@ describe('Carris', () => {
       });
       // Compare total of stops with amount changed since last year
       // log([allStops.length, stopsChangedRecently.length]);
-    });
+    }, 10000);
 
     test('should list nearest stops', async () => {
       const stops = await client.listStops({ latitude: 38, longitude: -9 });
@@ -84,7 +84,7 @@ describe('Carris', () => {
       ids.sort(() => 0.5 - Math.random());
       const estimations = await client.listEstimations(ids.slice(0, COUNT), 100);
       // log(estimations);
-    });
+    }, 10000);
   });
 
   describe('Geocoding', () => {
@@ -108,7 +108,7 @@ describe('Carris', () => {
       const suggestion = suggestions[0];
       const location = await client.loadGeocodingLocation(suggestion.id);
       // log(location);
-    });
+    }, 10000);
   });
 
   describe('Planner', () => {
