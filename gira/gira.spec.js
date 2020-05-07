@@ -17,7 +17,7 @@ describe('Gira', () => {
     });
   });
 
-  describe('stations', () => {
+  describe('Stations', () => {
     it('should list stations', async () => {
       const stations = await client.listStations();
       // log(stations);

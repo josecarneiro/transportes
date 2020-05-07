@@ -4,3 +4,4 @@ tmp
 .env
 package-lock.json
 yarn.lock
+*.code-workspace

@@ -4,5 +4,9 @@ tmp
 .env
 package-lock.json
 yarn.lock
+*.code-workspace
 
 *.spec.js
+/test
+jest.config.js
+.github

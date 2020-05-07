@@ -19,7 +19,7 @@ describe('Metro', () => {
     });
   });
 
-  describe('line status', () => {
+  describe('Line Status', () => {
     test('should check line status', async () => {
       const status = await client.checkLineStatus();
       // log(status);
