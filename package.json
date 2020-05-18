@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js",
     "test:dev": "nodemon nodemon --exec \"yarn test || true\"",
     "test": "jest test/index.spec.js"
   },

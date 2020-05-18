@@ -7,7 +7,8 @@ const Metro = require('.');
 const KEY = process.env.API_METRO_KEY;
 
 const client = new Metro({
-  key: KEY
+  key: KEY,
+  allowInsecureRequests: true
   // debug: true
 });
 
