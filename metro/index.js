@@ -9,13 +9,23 @@ const metroParsers = require('./parsers');
 const CURRENT_API_VERSION = '1.0.1';
 
 module.exports = class Metro extends GenericTransport {
-  constructor({ version = CURRENT_API_VERSION, key, ...options } = {}) {
+  constructor({
+    version = CURRENT_API_VERSION,
+    key,
+    allowInsecureRequests = false,
+    ...options
+  } = {}) {
     super(options);
     this.client = axios.create({
       baseURL: `https://api.metrolisboa.pt:8243/estadoServicoML/${version}`,
       headers: {
         Authorization: `Bearer ${key}`
-      }
+      },
+      ...(allowInsecureRequests && {
+        httpsAgent: new (require('https').Agent)({
+          rejectUnauthorized: false
+        })
+      })
     });
   }
 
