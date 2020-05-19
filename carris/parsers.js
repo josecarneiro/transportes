@@ -29,22 +29,23 @@ const _transformStopWithEstimation = ({ estimationList, ...busStop }) => ({
   estimations: estimationList.map(_transformEstimation)
 });
 
-const _transformVehicleBase = ({
-  busNumber: id,
-  publicId: stop,
-  plateNumber: plate,
-  ...vehicle
-}) => ({
+const _transformVehicleBase = ({ busNumber: id, plateNumber: plate, ...vehicle }) => ({
   id,
   plate,
-  stop,
   ...vehicle
 });
 
-const _transformEstimation = ({ voyageNumber: voyage, routeNumber: route, time, ...vehicle }) => ({
-  ..._transformVehicleBase(vehicle),
+const _transformEstimation = ({
+  publicId: stop,
+  routeNumber: route,
+  voyageNumber: voyage,
+  time,
+  ...vehicle
+}) => ({
+  stop,
   route,
   voyage,
+  ..._transformVehicleBase(vehicle),
   time: new Date(time)
 });
 
@@ -73,6 +74,9 @@ const _transformVehicle = ({
   lat: latitude,
   lng: longitude,
   state,
+  previousReportTime,
+  previousLatitude,
+  previousLongitude,
   ...vehicle
 }) => ({
   ..._transformVehicleBase(vehicle),
@@ -82,12 +86,19 @@ const _transformVehicle = ({
     latitude,
     longitude
   },
+  ...((previousLatitude || previousLongitude) && {
+    previousPosition: {
+      latitude: previousLatitude,
+      longitude: previousLongitude
+    }
+  }),
   ...((lastGpsTime || lastReportTime || dataServico || timeStamp) && {
     time: {
-      ...(lastGpsTime && { lastGps: new Date(lastGpsTime) }),
+      ...(timeStamp && { current: new Date(timeStamp) }),
       ...(lastReportTime && { lastReport: new Date(lastReportTime) }),
-      ...(dataServico && { serviceStart: new Date(dataServico) }),
-      ...(timeStamp && { current: new Date(timeStamp) })
+      ...(previousReportTime && { previousReport: new Date(previousReportTime) }),
+      ...(lastGpsTime && { lastGps: new Date(lastGpsTime) }),
+      ...(dataServico && { serviceStart: new Date(dataServico) })
     }
   })
 });
