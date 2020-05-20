@@ -50,13 +50,13 @@ class Carris extends GenericTransport {
     return (await this.load(endpoint)).map(carrisParsers._transformStop);
   };
 
-  // Estimations
+  // Estimates
 
   // A positive status returns:
   // 'Testing SIP @net.tcp://10.1.140.102:12407/SIPService => connection successfully tested :)'
-  checkEstimationsStatus = async () => (await this.load('/Estimations')).includes('success');
+  checkEstimatesStatus = async () => (await this.load('/Estimations')).includes('success');
 
-  listEstimations = async (stops, quantity = 99) => {
+  listEstimates = async (stops, quantity = 99) => {
     if (stops instanceof Array) {
       // Maximum size of endpoint is 299 characters, as such, including too many stops will break things
       const concatenateStops = (ids, limit) =>
@@ -65,13 +65,13 @@ class Carris extends GenericTransport {
           return value.length > limit ? acc : value;
         }, '');
       const list = concatenateStops(stops, 300 - 40);
-      const estimations = (
+      const estimates = (
         await this.load(`/Estimations/estimationbusstop/${list}/top/${quantity}`)
-      ).map(carrisParsers._transformStopWithEstimation);
-      return stops.map(id => estimations.find(estimation => estimation.id === id));
+      ).map(carrisParsers._transformStopWithEstimate);
+      return stops.map(id => estimates.find(estimate => estimate.id === id));
     } else {
       return (await this.load(`/Estimations/busStop/${stops}/top/${quantity}`)).map(
-        carrisParsers._transformEstimation
+        carrisParsers._transformEstimate
       );
     }
   };
@@ -106,8 +106,12 @@ class Carris extends GenericTransport {
     return (await this.load(endpoint)).map(carrisParsers._transformRoute);
   };
 
-  listRoutesAtBusStop = async id =>
-    (await this.load(`/Routes/busStop/${id}`)).map(carrisParsers._transformRoute);
+  loadRoute = async id => {
+    const item = await this.load(`/Routes/${id}`);
+    // The API returns an empty string for some routes
+    if (!item) return;
+    return carrisParsers._transformRoute(item);
+  };
 
   // Planning
 

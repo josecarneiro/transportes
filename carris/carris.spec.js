@@ -6,7 +6,7 @@ const client = new Carris({
   // debug: true
 });
 
-const { log } = require('./../utilities');
+// const { log, write } = require('./../utilities');
 
 describe('Carris', () => {
   beforeAll(async () => {
@@ -61,29 +61,29 @@ describe('Carris', () => {
     });
   });
 
-  describe('Estimations', () => {
-    test('should check estimation status', async () => {
-      const status = await client.checkEstimationsStatus();
+  describe('Estimates', () => {
+    test('should check estimate status', async () => {
+      const status = await client.checkEstimatesStatus();
       // log(status);
     });
 
-    test('should load stop estimation', async () => {
-      const estimations = await client.listEstimations(13620, 100);
-      // log(estimations);
+    test('should load stop estimate', async () => {
+      const estimates = await client.listEstimates(13620, 100);
+      // log(estimates);
     });
 
-    test('should load multiple stop estimations', async () => {
-      const estimations = await client.listEstimations([13620, 13621], 100);
-      // log(estimations);
+    test('should load multiple stop estimates', async () => {
+      const estimates = await client.listEstimates([13620, 13621], 100);
+      // log(estimates);
     });
 
-    test('should estimations for high volume of stops', async () => {
-      const COUNT = 20;
+    test('should estimates for high volume of stops', async () => {
+      const COUNT = 40;
       const stops = await client.listStops();
       const ids = stops.map(({ id }) => id);
       ids.sort(() => 0.5 - Math.random());
-      const estimations = await client.listEstimations(ids.slice(0, COUNT), 100);
-      // log(estimations);
+      const estimates = await client.listEstimates(ids.slice(0, COUNT), 100);
+      // log(estimates);
     }, 10000);
   });
 
@@ -143,6 +143,12 @@ describe('Carris', () => {
     //   const stops = await client.listStops({ latitude: 38.7539422, longitude: -9.1698717 });
     //   // log(stops);
     // }).timeout(5000);
+
+    test('should load single route', async () => {
+      const route = await client.loadRoute('204');
+      // wrlofite(__dirname + '/route.json', route);
+      // log(route);
+    });
   });
 
   describe('Timetable', () => {

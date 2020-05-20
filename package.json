@@ -16,8 +16,8 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "jest": "^26.0.1",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   }
 }

@@ -24,9 +24,9 @@ const _transformStop = ({
   ...stop
 });
 
-const _transformStopWithEstimation = ({ estimationList, ...busStop }) => ({
+const _transformStopWithEstimate = ({ estimationList: estimates, ...busStop }) => ({
   ..._transformStop(busStop),
-  estimations: estimationList.map(_transformEstimation)
+  estimates: estimates.map(_transformEstimate)
 });
 
 const _transformVehicleBase = ({ busNumber: id, plateNumber: plate, ...vehicle }) => ({
@@ -35,7 +35,7 @@ const _transformVehicleBase = ({ busNumber: id, plateNumber: plate, ...vehicle }
   ...vehicle
 });
 
-const _transformEstimation = ({
+const _transformEstimate = ({
   publicId: stop,
   routeNumber: route,
   voyageNumber: voyage,
@@ -49,12 +49,68 @@ const _transformEstimation = ({
   time: new Date(time)
 });
 
+const _transformIteneraryConnections = ({
+  id,
+  direction,
+  orderNum: order,
+  busStop: stop,
+  distance,
+  ...connection
+}) => ({
+  id,
+  direction,
+  order,
+  distance,
+  stop: _transformStop(stop),
+  ...connection
+});
+
+const _transformShape = string => {
+  try {
+    const data = JSON.parse(string);
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+const _transformItenerary = ({ id, type, direction, connections, shape, ...itenerary }) => ({
+  id,
+  type: type.toUpperCase(),
+  direction,
+  ...(shape && { shape: _transformShape(shape) }),
+  ...(connections && { connections: connections.map(_transformIteneraryConnections) }),
+  ...itenerary
+});
+
+const _transformRouteVariant = ({
+  id,
+  variantNumber: variant,
+  isActive: active,
+  upItinerary,
+  downItinerary,
+  circItinerary,
+  ...other
+}) => ({
+  id,
+  variant,
+  active,
+  iteneraries: [
+    ...(upItinerary ? [_transformItenerary({ direction: 'ASC', ...upItinerary })] : []),
+    ...(downItinerary ? [_transformItenerary({ direction: 'DESC', ...downItinerary })] : []),
+    ...(circItinerary ? [_transformItenerary({ direction: 'CIRC', ...circItinerary })] : [])
+  ],
+  ...other
+});
+
 const _transformRoute = ({
   id,
   routeNumber: number,
   name,
   isPublicVisible: visible,
   timestamp: creationDate,
+  isCirc: circular,
+  variants,
   ...route
 }) => ({
   id,
@@ -62,6 +118,8 @@ const _transformRoute = ({
   name,
   visible,
   creationDate: new Date(creationDate),
+  ...(typeof circular === 'boolean' && { circular }),
+  ...(variants && { variants: variants.map(_transformRouteVariant) }),
   ...route
 });
 
@@ -167,9 +225,9 @@ const _transformTimetable = ({ dayId, seasonId, dayName, seasonName, stopTimes }
 
 module.exports = {
   _transformStop,
-  _transformStopWithEstimation,
+  _transformStopWithEstimate,
   _transformVehicleBase,
-  _transformEstimation,
+  _transformEstimate,
   _transformRoute,
   _transformVehicle,
   _transformAlert,
