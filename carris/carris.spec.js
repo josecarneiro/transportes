@@ -6,7 +6,7 @@ const client = new Carris({
   // debug: true
 });
 
-// const { log, write } = require('./../utilities');
+const { log, write } = require('./../utilities');
 
 describe('Carris', () => {
   beforeAll(async () => {
@@ -22,22 +22,22 @@ describe('Carris', () => {
     });
   });
 
-  describe('Alerts', () => {
-    test('should list alerts', async () => {
-      const alerts = await client.listAlerts();
-      expect(alerts).toBeInstanceOf(Array);
-      // log(alerts);
-      for (let alert of alerts) {
-        expect(typeof alert).toBe('object');
-        expect(typeof alert.id).toBe('number');
-        expect(typeof alert.type).toBe('string');
-        expect(typeof alert.route === 'string' || alert.route === null).toBeTruthy();
-        expect(typeof alert.stop === 'string' || alert.stop === null).toBeTruthy();
-        expect(alert.published instanceof Date || alert.published === null).toBeTruthy();
-        expect(alert.expires instanceof Date || alert.expires === null).toBeTruthy();
-      }
-    });
-  });
+  // describe('Alerts', () => {
+  //   test('should list alerts', async () => {
+  //     const alerts = await client.listAlerts();
+  //     expect(alerts).toBeInstanceOf(Array);
+  //     // log(alerts);
+  //     for (let alert of alerts) {
+  //       expect(typeof alert).toBe('object');
+  //       expect(typeof alert.id).toBe('number');
+  //       expect(typeof alert.type).toBe('string');
+  //       expect(typeof alert.route === 'string' || alert.route === null).toBeTruthy();
+  //       expect(typeof alert.stop === 'string' || alert.stop === null).toBeTruthy();
+  //       expect(alert.published instanceof Date || alert.published === null).toBeTruthy();
+  //       expect(alert.expires instanceof Date || alert.expires === null).toBeTruthy();
+  //     }
+  //   });
+  // });
 
   describe('Stops', () => {
     test('should list all stops', async () => {
@@ -146,7 +146,6 @@ describe('Carris', () => {
 
     test('should load single route', async () => {
       const route = await client.loadRoute('204');
-      // wrlofite(__dirname + '/route.json', route);
       // log(route);
     });
   });
@@ -170,7 +169,7 @@ describe('Carris', () => {
     });
 
     test('should list vehicles for a certain route', async () => {
-      const vehicles = await client.listVehicles({ route: 701 });
+      const vehicles = await client.listVehicles({ route: '701' });
       // log(vehicles);
     });
 

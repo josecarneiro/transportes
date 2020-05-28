@@ -6,10 +6,10 @@ const GenericTransport = require('./../generic');
 
 const carrisParsers = require('./parsers');
 
-const CURRENT_API_VERSION = '2.8';
+const DEFAULT_API_VERSION = '2.7';
 
 class Carris extends GenericTransport {
-  constructor({ version = CURRENT_API_VERSION, ...options } = {}) {
+  constructor({ version = DEFAULT_API_VERSION, ...options } = {}) {
     super(options);
     this.client = axios.create({
       baseURL: `https://carris.tecmic.com/api/v${version}`
@@ -34,7 +34,9 @@ class Carris extends GenericTransport {
 
   // Alerts
 
-  listAlerts = async () => (await this.load('/alerts')).map(carrisParsers._transformAlert);
+  // Alert listing is not available in API version 2.7,
+  // the current default version.
+  // listAlerts = async () => (await this.load('/alerts')).map(carrisParsers._transformAlert);
 
   // Bus Stops
 

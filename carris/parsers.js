@@ -30,7 +30,7 @@ const _transformStopWithEstimate = ({ estimationList: estimates, ...busStop }) =
 });
 
 const _transformVehicleBase = ({ busNumber: id, plateNumber: plate, ...vehicle }) => ({
-  id,
+  id: id || null,
   plate,
   ...vehicle
 });
