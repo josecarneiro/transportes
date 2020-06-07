@@ -1,5 +1,7 @@
 'use strict';
 
+const { localeDateToDate } = require('./../utilities');
+
 const _transformStop = ({
   id,
   publicId,
@@ -19,7 +21,7 @@ const _transformStop = ({
     longitude
   },
   visible,
-  updateDate: new Date(timestamp),
+  updateDate: localeDateToDate(timestamp),
   ...(distance && { distance: distance * 1000 }),
   ...stop
 });
@@ -46,7 +48,7 @@ const _transformEstimate = ({
   route,
   voyage,
   ..._transformVehicleBase(vehicle),
-  time: new Date(time)
+  time: localeDateToDate(time)
 });
 
 const _transformIteneraryConnections = ({
@@ -117,7 +119,7 @@ const _transformRoute = ({
   number,
   name,
   visible,
-  creationDate: new Date(creationDate),
+  creationDate: localeDateToDate(creationDate),
   ...(typeof circular === 'boolean' && { circular }),
   ...(variants && { variants: variants.map(_transformRouteVariant) }),
   ...route
@@ -152,11 +154,11 @@ const _transformVehicle = ({
   }),
   ...((lastGpsTime || lastReportTime || dataServico || timeStamp) && {
     time: {
-      ...(timeStamp && { current: new Date(timeStamp) }),
-      ...(lastReportTime && { lastReport: new Date(lastReportTime) }),
-      ...(previousReportTime && { previousReport: new Date(previousReportTime) }),
-      ...(lastGpsTime && { lastGps: new Date(lastGpsTime) }),
-      ...(dataServico && { serviceStart: new Date(dataServico) })
+      ...(timeStamp && { current: localeDateToDate(timeStamp) }),
+      ...(lastReportTime && { lastReport: localeDateToDate(lastReportTime) }),
+      ...(previousReportTime && { previousReport: localeDateToDate(previousReportTime) }),
+      ...(lastGpsTime && { lastGps: localeDateToDate(lastGpsTime) }),
+      ...(dataServico && { serviceStart: localeDateToDate(dataServico) })
     }
   })
 });
@@ -173,8 +175,8 @@ const _transformAlert = ({
   id,
   type: { Informative: 'informative', Ocurrence: 'ocurrence' }[type],
   description,
-  published: published && new Date(published),
-  expires: expires && new Date(expires),
+  published: published && localeDateToDate(published),
+  expires: expires && localeDateToDate(expires),
   route,
   stop
 });

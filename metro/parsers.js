@@ -1,5 +1,15 @@
 'use strict';
 
+const { localeDateToDate } = require('./../utilities');
+
+const formatDate = string =>
+  [
+    [string.slice(0, 4), string.slice(4, 6), string.slice(6, 8)].join('-'),
+    [(string.slice(8, 10), string.slice(10, 12), string.slice(12, 14))].join(':')
+  ].join('T');
+
+const parseDate = string => localeDateToDate(formatDate(string));
+
 const _transformStation = ({
   stop_id: id, // 'AP',
   stop_name: name, // 'Aeroporto',
@@ -17,6 +27,11 @@ const _transformStation = ({
   longitude: Number(longitude),
   lines: line.toLowerCase().replace(/\[|\]/g, '').split(', '),
   zone
+});
+
+const parseArrival = (id, currentTime, time) => ({
+  train: id,
+  time: new Date(Number(parseDate(currentTime)) + Number(time) * 1000)
 });
 
 const _transformEstimates = ({
@@ -40,32 +55,13 @@ const _transformEstimates = ({
   exit,
   UT,
   arrivals: [
-    {
-      train: train1,
-      time: new Date(Number(parseDate(time)) + Number(time1) * 1000)
-    },
-    {
-      train: train2,
-      time: new Date(Number(parseDate(time)) + Number(time2) * 1000)
-    },
-    {
-      train: train3,
-      time: new Date(Number(parseDate(time)) + Number(time3) * 1000)
-    }
+    parseArrival(train1, time, time1),
+    parseArrival(train2, time, time2),
+    parseArrival(train3, time, time3)
   ]
 });
 
 const _transformDestination = ({ id_destino: id, nome_destino: name }) => ({ id, name });
-
-const parseDate = string =>
-  new Date(
-    string.slice(0, 4),
-    Number(string.slice(4, 6)) - 1,
-    string.slice(6, 8),
-    string.slice(8, 10),
-    string.slice(10, 12),
-    string.slice(12, 14)
-  );
 
 module.exports = {
   _transformEstimates,

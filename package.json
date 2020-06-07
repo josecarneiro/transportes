@@ -4,14 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test:dev": "nodemon nodemon --exec \"yarn test || true\"",
+    "test:dev": "jest test/index.spec.js --watch",
     "test": "jest test/index.spec.js"
   },
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "moment-timezone": "^0.5.31"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
