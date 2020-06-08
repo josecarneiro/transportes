@@ -5,7 +5,7 @@ const { localeDateToDate } = require('./../utilities');
 const formatDate = string =>
   [
     [string.slice(0, 4), string.slice(4, 6), string.slice(6, 8)].join('-'),
-    [(string.slice(8, 10), string.slice(10, 12), string.slice(12, 14))].join(':')
+    [string.slice(8, 10), string.slice(10, 12), string.slice(12, 14)].join(':')
   ].join('T');
 
 const parseDate = string => localeDateToDate(formatDate(string));
