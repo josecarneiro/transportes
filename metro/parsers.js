@@ -10,6 +10,16 @@ const formatDate = string =>
 
 const parseDate = string => localeDateToDate(formatDate(string));
 
+const intervalToSeconds = time =>
+  time
+    .split(':')
+    .map(value => Number(value))
+    .reduce((total, value, index) => total + (!index ? value * 60 : index === 1 ? value : 0), 0);
+
+const formatLineName = line => line.toLowerCase();
+
+const formatStationName = name => name.replace(/\/Chiado/g, '-Chiado'); // The name for "Baixa-Chiado" comes misformated as "Baixa/Chiado"
+
 const _transformStation = ({
   stop_id: id, // 'AP',
   stop_name: name, // 'Aeroporto',
@@ -20,13 +30,13 @@ const _transformStation = ({
   zone_id: zone // 'L'
 }) => ({
   id,
-  // name,
-  // name: name.replace(/\//g, '-'), // The name for "Baixa-Chiado" comes misformated as "Baixa/Chiado"
-  name: name.replace(/\/Chiado/g, '-Chiado'), // The name for "Baixa-Chiado" comes misformated as "Baixa/Chiado"
-  latitude: Number(latitude),
-  longitude: Number(longitude),
-  lines: line.toLowerCase().replace(/\[|\]/g, '').split(', '),
-  zone
+  name: formatStationName(name),
+  lines: line.replace(/\[|\]/g, '').split(', ').map(formatLineName),
+  zone,
+  position: {
+    latitude: Number(latitude),
+    longitude: Number(longitude)
+  }
 });
 
 const parseArrival = (id, currentTime, time) => ({
@@ -36,7 +46,7 @@ const parseArrival = (id, currentTime, time) => ({
 
 const _transformEstimates = ({
   stop_id: station, //  'CA'
-  cais: pier, //  'PT4CAO'
+  cais: platform, //  'PT4CAO'
   hora: time, //  '20200215185211'
   comboio: train1, //  '7A'
   tempoChegada1: time1, //  '402'
@@ -44,14 +54,14 @@ const _transformEstimates = ({
   tempoChegada2: time2, //  '782'
   comboio3: train3, //  '1A'
   tempoChegada3: time3, //  '1296'
-  destino: destiny, //  '33'
+  destino: destination, //  '33'
   sairServico: exit, //  '0'
   UT: UT //  '2'
 }) => ({
   station,
-  pier,
+  platform,
   time: parseDate(time),
-  destiny,
+  destination,
   exit,
   UT,
   arrivals: [
@@ -63,8 +73,26 @@ const _transformEstimates = ({
 
 const _transformDestination = ({ id_destino: id, nome_destino: name }) => ({ id, name });
 
+const _transformInterval = ({
+  Linha: line,
+  HoraInicio: start,
+  HoraFim: end,
+  Intervalo: interval,
+  UT,
+  Dia: day
+}) => ({
+  line: formatLineName(line),
+  start,
+  end,
+  interval: intervalToSeconds(interval),
+  UT,
+  // day,
+  weekday: day.toLowerCase() === 's'
+});
+
 module.exports = {
   _transformEstimates,
   _transformStation,
-  _transformDestination
+  _transformDestination,
+  _transformInterval
 };

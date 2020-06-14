@@ -13,17 +13,23 @@ const client = new Metro({
 });
 
 describe('Metro', () => {
+  beforeAll(async () => {
+    const status = await client.checkAPIStatus();
+    if (!status) throw new Error('Metro API status is down');
+  });
+
   describe('API status', () => {
     test('should check API status', async () => {
       const status = await client.checkAPIStatus();
-      // log(status);
+      expect(typeof status === 'boolean').toEqual(true);
+      expect(status).toEqual(true);
     });
   });
 
   describe('Line Status', () => {
     test('should check line status', async () => {
-      const status = await client.checkLineStatus();
-      // log(status);
+      const statuses = await client.checkLineStatus();
+      // log(statuses);
     });
   });
 
@@ -36,6 +42,14 @@ describe('Metro', () => {
     test('should load station', async () => {
       const station = await client.loadStation('CU');
       // log(station);
+    });
+
+    test('should throw error if station id is invalid', async () => {
+      try {
+        await client.loadStation('HELLO');
+      } catch (error) {
+        expect(error instanceof Error).toEqual(true);
+      }
     });
   });
 
@@ -62,13 +76,35 @@ describe('Metro', () => {
 
   describe('Estimates', () => {
     test('should load all estimates', async () => {
-      const times = await client.loadEstimates();
+      const times = await client.listEstimates();
       // log(times);
     });
 
     test('should load station estimates', async () => {
-      const times = await client.loadStationEstimates('CU');
+      const times = await client.listEstimates({ station: 'CU' });
       // log(times);
+    });
+
+    test('should load line estimates', async () => {
+      const times = await client.listEstimates({ line: 'Amarela' });
+      // log(times);
+    });
+  });
+
+  describe('Intervals', () => {
+    test('should load intervals for specific line', async () => {
+      const intervals = await client.listIntervals('Amarela');
+      // log(intervals);
+    });
+
+    test('should load intervals for weekend', async () => {
+      const intervals = await client.listIntervals('Amarela', { weekday: false });
+      // log(intervals);
+    });
+
+    test('should load intervals for weekend', async () => {
+      const intervals = await client.listIntervals('Amarela', { weekday: false });
+      // log(intervals);
     });
   });
 });

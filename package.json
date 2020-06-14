@@ -1,8 +1,13 @@
 {
   "name": "transportes",
   "version": "0.0.11",
-  "main": "index.js",
   "license": "MIT",
+  "author": {
+    "name": "José Carneiro",
+    "email": "contact@josecarnei.ro",
+    "url": "https://josecarnei.ro"
+  },
+  "main": "index.js",
   "scripts": {
     "test:dev": "jest test/index.spec.js --watch",
     "test": "jest test/index.spec.js"

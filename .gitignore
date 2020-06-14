@@ -5,3 +5,4 @@ tmp
 package-lock.json
 yarn.lock
 *.code-workspace
+.vscode

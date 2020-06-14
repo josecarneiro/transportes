@@ -10,3 +10,4 @@ yarn.lock
 /test
 jest.config.js
 .github
+.vscode

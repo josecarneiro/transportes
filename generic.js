@@ -8,7 +8,7 @@ module.exports = class GenericTransport {
   }
 
   debug(...data) {
-    if (this.options.debug) for (let item of data) console.log(item);
+    if (this.options.debug) for (const item of data) console.log(item);
   }
 
   async _load(endpoint, { query } = {}) {
@@ -18,6 +18,9 @@ module.exports = class GenericTransport {
       return response;
     } catch (error) {
       this.debug(`Error loading endpoint: "${endpoint}"`, error);
+      if (error.message === 'ECONNRESET') {
+        throw new Error('CONNECTION_LOST');
+      }
       throw error;
     }
   }

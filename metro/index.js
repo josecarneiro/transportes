@@ -8,7 +8,7 @@ const metroParsers = require('./parsers');
 
 const CURRENT_API_VERSION = '1.0.1';
 
-module.exports = class Metro extends GenericTransport {
+class Metro extends GenericTransport {
   constructor({
     version = CURRENT_API_VERSION,
     key,
@@ -31,7 +31,15 @@ module.exports = class Metro extends GenericTransport {
 
   async load(endpoint, { query } = {}) {
     const response = await this._load(endpoint, { query });
-    return response.data.resposta;
+    const { resposta: result, codigo: code } = response.data;
+    if (code && Number(code) >= 400) {
+      if (typeof result === 'string') {
+        throw new Error(result);
+      } else {
+        throw new Error();
+      }
+    }
+    return result;
   }
 
   // API Status
@@ -56,8 +64,8 @@ module.exports = class Metro extends GenericTransport {
       ['azul', 'tipo_msg_az']
     ].map(([line, message]) => ({
       line,
-      status: result[line] === ' Ok',
-      message: result[message] !== '0' ? result[message] : null
+      active: result[line] === ' Ok',
+      ...(result[message] !== '0' && { message: result[message] })
     }));
   };
 
@@ -66,19 +74,40 @@ module.exports = class Metro extends GenericTransport {
   listStations = async () =>
     (await this.load('/infoEstacao/todos')).map(metroParsers._transformStation);
 
-  loadStation = async id =>
-    (await this.load(`/infoEstacao/${id}`)).map(metroParsers._transformStation);
+  loadStation = async id => {
+    const result = await this.load(`/infoEstacao/${id}`);
+    if (result instanceof Array && result.length) {
+      return metroParsers._transformStation(result[0]);
+    } else {
+      return null;
+    }
+  };
+
+  // Wait Times
+
+  listEstimates = async ({ line, station } = {}) => {
+    let endpoint = '/tempoEspera';
+    if (line) {
+      endpoint += `/Linha/${line}`;
+    } else if (station) {
+      endpoint += `/Estacao/${station}`;
+    } else {
+      endpoint += '/Estacao/todos';
+    }
+    return (await this.load(endpoint)).map(metroParsers._transformEstimates);
+  };
 
   // Destinations
 
   listDestinations = async () =>
     (await this.load('/infoDestinos/todos')).map(metroParsers._transformDestination);
 
-  // Wait Times
+  // Intervals
 
-  loadEstimates = async () =>
-    (await this.load('/tempoEspera/Estacao/todos')).map(metroParsers._transformEstimates);
+  listIntervals = async (line, { weekday = true } = {}) =>
+    (await this.load(`/infoIntervalos/${line}/${weekday ? 'S' : 'F'}`)).map(
+      metroParsers._transformInterval
+    );
+}
 
-  loadStationEstimates = async station =>
-    (await this.load(`/tempoEspera/Estacao/${station}`)).map(metroParsers._transformEstimates);
-};
+module.exports = Metro;
