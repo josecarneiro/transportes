@@ -56,14 +56,7 @@ describe('Metro', () => {
   describe('Destinations', () => {
     test('should list destinations', async () => {
       const destinations = await client.listDestinations();
-      const stations = await client.listStations();
-
-      const completed = destinations.map(({ id, name }) => ({
-        destinationId: id,
-        name,
-        ...stations.find(station => station.name === name)
-      }));
-      // log(completed);
+      // const stations = await client.listStations();
       // log(destinations);
       // log(stations);
     }, 10000);

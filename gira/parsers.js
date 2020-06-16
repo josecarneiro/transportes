@@ -1,6 +1,18 @@
 'use strict';
 
-const extractName = name => name.replace(/\d+ ?- ?/g, '');
+const parseName = name => name.replace(/\d+ ?- ?/g, '').replace('Ã�', 'Á');
+
+const parseBoundingBox = box =>
+  box.reduce((acc, value, index) => {
+    const cloneObject = data => JSON.parse(JSON.stringify(data));
+    const clone = cloneObject(acc);
+    if (!(index % 2)) {
+      clone.push({ longitude: value });
+    } else {
+      clone[Math.floor(index / 2)].latitude = value;
+    }
+    return clone;
+  }, []);
 
 const _transformStationBasic = ({
   id_expl: id,
@@ -15,7 +27,7 @@ const _transformStationBasic = ({
 }) => ({
   id,
   ...(id !== planningId && { planningId }),
-  name: extractName(name),
+  name: parseName(name),
   type,
   bikes,
   docks,
@@ -33,7 +45,7 @@ const _transformStationItem = ({
     latitude,
     longitude
   },
-  boundingBox,
+  bounds: parseBoundingBox(boundingBox),
   updated: new Date(updated)
 });
 
