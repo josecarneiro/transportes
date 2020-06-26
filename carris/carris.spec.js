@@ -4,6 +4,7 @@ const Carris = require('.');
 
 const client = new Carris({
   // debug: true
+  // version: '2.9'
 });
 
 const { log, write } = require('./../utilities');
@@ -51,6 +52,7 @@ describe('Carris', () => {
       const stopsChangedRecently = await client.listStops({
         after: date
       });
+      // log(allStops);
       // Compare total of stops with amount changed since last year
       // log([allStops.length, stopsChangedRecently.length]);
     }, 10000);
@@ -145,7 +147,7 @@ describe('Carris', () => {
     // }).timeout(5000);
 
     test('should load single route', async () => {
-      const route = await client.loadRoute('204');
+      const route = await client.loadRoute('701');
       // log(route);
     });
   });

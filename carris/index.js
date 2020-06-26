@@ -16,21 +16,21 @@ class Carris extends GenericTransport {
     });
   }
 
-  load = async (endpoint, { query } = {}) => {
+  async load(endpoint, { query } = {}) {
     const response = await this._load(endpoint, { query });
     return response.data;
-  };
+  }
 
   // Check API Status
 
-  checkAPIStatus = async () => {
+  async checkAPIStatus() {
     try {
       const { status } = await this._load('/busstops');
       return status >= 200 && status < 400;
     } catch (error) {
       return false;
     }
-  };
+  }
 
   // Alerts
 
@@ -40,7 +40,7 @@ class Carris extends GenericTransport {
 
   // Bus Stops
 
-  listStops = async ({ latitude, longitude, after, route } = {}) => {
+  async listStops({ latitude, longitude, after, route } = {}) {
     let endpoint;
     if (after && after instanceof Date) {
       endpoint = `/busstops/timestamp/${after.toISOString()}`;
@@ -49,16 +49,20 @@ class Carris extends GenericTransport {
     } else {
       endpoint = '/busstops';
     }
-    return (await this.load(endpoint)).map(carrisParsers._transformStop);
-  };
+    const rawStops = await this.load(endpoint);
+    return rawStops.map(carrisParsers._transformStop);
+  }
 
   // Estimates
 
   // A positive status returns:
   // 'Testing SIP @net.tcp://10.1.140.102:12407/SIPService => connection successfully tested :)'
-  checkEstimatesStatus = async () => (await this.load('/Estimations')).includes('success');
+  async checkEstimatesStatus() {
+    const result = await this.load('/Estimations');
+    return result.includes('success');
+  }
 
-  listEstimates = async (stops, quantity = 99) => {
+  async listEstimates(stops, quantity = 99) {
     if (stops instanceof Array) {
       // Maximum size of endpoint is 299 characters, as such, including too many stops will break things
       const concatenateStops = (ids, limit) =>
@@ -67,92 +71,100 @@ class Carris extends GenericTransport {
           return value.length > limit ? acc : value;
         }, '');
       const list = concatenateStops(stops, 300 - 40);
-      const estimates = (
-        await this.load(`/Estimations/estimationbusstop/${list}/top/${quantity}`)
-      ).map(carrisParsers._transformStopWithEstimate);
+      const rawStopWithEstimate = await this.load(
+        `/Estimations/estimationbusstop/${list}/top/${quantity}`
+      );
+      const estimates = rawStopWithEstimate.map(carrisParsers._transformStopWithEstimate);
       return stops.map(id => estimates.find(estimate => estimate.id === id));
     } else {
-      return (await this.load(`/Estimations/busStop/${stops}/top/${quantity}`)).map(
-        carrisParsers._transformEstimate
-      );
+      const rawEstimates = await this.load(`/Estimations/busStop/${stops}/top/${quantity}`);
+      return rawEstimates.map(carrisParsers._transformEstimate);
     }
-  };
+  }
 
   // Geocoding
 
-  geocode = async query =>
-    (await this.load(`/Geocoding/${query}`)).map(carrisParsers._transformGeocodingResult);
+  async geocode(query) {
+    const rawGeocodingResults = await this.load(`/Geocoding/${query}`);
+    return rawGeocodingResults.map(carrisParsers._transformGeocodingResult);
+  }
 
-  geocodeSuggest = async query =>
-    (await this.load(`/Geocoding/suggest/${query}`)).map(
-      carrisParsers._transformGeocodingSuggestion
+  async geocodeSuggest(query) {
+    const rawGeocodingSuggestions = await this.load(`/Geocoding/suggest/${query}`);
+    return rawGeocodingSuggestions.map(carrisParsers._transformGeocodingSuggestion);
+  }
+
+  async reverseGeocode({ latitude, longitude }) {
+    const rawGeocodingResult = await this.load(
+      `/Geocoding/reverse/lat/${latitude}/lng/${longitude}`
     );
+    return carrisParsers._transformGeocodingResult(rawGeocodingResult);
+  }
 
-  reverseGeocode = async ({ latitude, longitude }) =>
-    carrisParsers._transformGeocodingResult(
-      await this.load(`/Geocoding/reverse/lat/${latitude}/lng/${longitude}`)
-    );
-
-  loadGeocodingLocation = async id =>
-    carrisParsers._transformGeocodingResult(await this.load(`/Geocoding/fromId/${id}`));
+  async loadGeocodingLocation(id) {
+    const rawGeocodingResult = await this.load(`/Geocoding/fromId/${id}`);
+    return carrisParsers._transformGeocodingResult(rawGeocodingResult);
+  }
 
   // Routes
 
-  listRoutes = async ({ stop, after } = {}) => {
+  async listRoutes({ stop, after } = {}) {
     let endpoint = '/Routes';
     if (stop) {
       endpoint += `/busStop/${stop}`;
     } else if (after && after instanceof Date) {
       endpoint += `/timestamp/${after.toISOString()}`;
     }
-    return (await this.load(endpoint)).map(carrisParsers._transformRoute);
-  };
+    const rawRoutes = await this.load(endpoint);
+    return rawRoutes.map(carrisParsers._transformRoute);
+  }
 
-  loadRoute = async id => {
+  async loadRoute(id) {
     const item = await this.load(`/Routes/${id}`);
     // The API returns an empty string for some routes
     if (!item) return;
     return carrisParsers._transformRoute(item);
-  };
+  }
 
   // Planning
 
   // 2020-05-06T20%3A00%3A00
 
-  plan = async ({
+  async plan({
     start: { latitude: startLatitude, longitude: startLongitude },
     end: { latitude: endLatitude, longitude: endLongitude },
     date,
     language
-  }) =>
-    await this.load(
+  }) {
+    const rawPlan = await this.load(
       `/Planner/startlat/${startLatitude}/startlon/${startLongitude}/endLat/${endLatitude}/endLon/${endLongitude}/start/${date.toISOString()}/language/${language}`
     );
+    return rawPlan;
+  }
 
   // Timetables
 
-  loadTimetable = async ({ route, direction, stop, date }) =>
-    carrisParsers._transformTimetable(
-      await this.load(
-        `/StopTimes/routeNumber/${route}/direction/${direction}/stop/${stop}/date/${
-          date.toISOString().split('T')[0]
-        }`
-      )
+  async loadTimetable({ route, direction, stop, date }) {
+    const formatedDate = date.toISOString().split('T')[0];
+    const rawTimetable = await this.load(
+      `/StopTimes/routeNumber/${route}/direction/${direction}/stop/${stop}/date/${formatedDate}`
     );
+    return carrisParsers._transformTimetable(rawTimetable);
+  }
 
   // Vehicles
 
-  loadVehicle = async id =>
-    carrisParsers._transformVehicle({
-      id,
-      ...(await this.load(`/SGO/busNumber/${id}`))
-    });
+  async loadVehicle(id) {
+    const rawVehicle = await this.load(`/SGO/busNumber/${id}`);
+    return carrisParsers._transformVehicle({ id, ...rawVehicle });
+  }
 
-  listVehicles = async ({ route } = {}) => {
+  async listVehicles({ route } = {}) {
     let endpoint = '/vehicleStatuses';
     if (route) endpoint += `/routeNumber/${route}`;
-    return (await this.load(endpoint)).map(carrisParsers._transformVehicle);
-  };
+    const rawVehicles = await this.load(endpoint);
+    return rawVehicles.map(carrisParsers._transformVehicle);
+  }
 }
 
 module.exports = Carris;

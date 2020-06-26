@@ -3,8 +3,8 @@
 const { localeDateToDate } = require('./../utilities');
 
 const _transformStop = ({
-  id,
-  publicId,
+  publicId: id,
+  id: internalId,
   name,
   lat: latitude,
   lng: longitude,
@@ -14,7 +14,7 @@ const _transformStop = ({
   ...stop
 }) => ({
   id,
-  publicId,
+  internalId,
   name,
   position: {
     latitude,
@@ -106,8 +106,8 @@ const _transformRouteVariant = ({
 });
 
 const _transformRoute = ({
-  id,
-  routeNumber: number,
+  routeNumber: id,
+  id: internalId,
   name,
   isPublicVisible: visible,
   timestamp: creationDate,
@@ -116,7 +116,7 @@ const _transformRoute = ({
   ...route
 }) => ({
   id,
-  number,
+  internalId,
   name,
   visible,
   creationDate: localeDateToDate(creationDate),
